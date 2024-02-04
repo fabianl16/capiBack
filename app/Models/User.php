@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -42,4 +43,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function domicilios()
+    {
+        return $this->hasMany(Domicilio::class);
+    }
+
+    public function calcularEdad()
+    {
+        $fechaNacimiento = new Carbon($this->fecha_nacimiento);
+        return $fechaNacimiento->diffInYears(Carbon::now());
+    }
 }
